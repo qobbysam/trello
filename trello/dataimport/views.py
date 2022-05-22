@@ -52,7 +52,8 @@ class HandInputView(LoginRequiredMixin,View):
         else:
 
             messages.warning(request, "form submitted is not valid")
-
+            messages.warning(request, form.errors)
+            print(form.errors)
             return HttpResponseRedirect("/")
             
 
