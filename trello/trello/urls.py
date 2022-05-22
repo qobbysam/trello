@@ -16,28 +16,16 @@ Including another URLconf
 from re import template
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
-from dataimport.forms import UserFileUploadForm
-from dataimport.forms import UserRegisterGadgetForm
+
+
+from dataimport.views import HomeRoute
 
 
 ##Default Route
 
-class HomeRoute(TemplateView):
-    template_name = 'home.html'
 
-    form = UserFileUploadForm
-
-    gaget_form = UserRegisterGadgetForm
-    
-    def get_context_data(self, *args, **kwargs):
-        context = super(HomeRoute, self).get_context_data(*args, **kwargs)
-        context['form'] = self.form
-        context['gaget_form'] = self.gaget_form
-        
-        return context
 ##api routes
 
 urlpatterns = [

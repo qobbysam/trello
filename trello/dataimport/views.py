@@ -4,15 +4,32 @@ from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views import View
+from django.views.generic.base import TemplateView
+
 from django.core import serializers
 from django.urls import reverse
 
 import pickle
 
 from .services import handle_user_file_input_post, handle_user_input_get, handle_user_input_post, handle_user_file_get
-from .forms import UserFileUploadForm, UserHandInputForm
+from .forms import UserFileUploadForm, UserHandInputForm, UserRegisterGadgetForm
+#from dataimport.forms import UserFileUploadForm
+#from dataimport.forms import UserRegisterGadgetForm
 # Create your views here.
 
+class HomeRoute(TemplateView):
+    template_name = 'home.html'
+
+    form = UserFileUploadForm
+
+    gaget_form = UserRegisterGadgetForm
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super(HomeRoute, self).get_context_data(*args, **kwargs)
+        context['form'] = self.form
+        context['gaget_form'] = self.gaget_form
+        
+        return context
 
 class HandInputView(LoginRequiredMixin,View):
     #model
@@ -121,3 +138,4 @@ class FileInputView(View):
             return HttpResponseRedirect("/")
         #     return HttpResponse
         #return HttpResponse("post called on file input")
+
