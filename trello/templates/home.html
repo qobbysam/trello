@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+
+{% block content %}
+<div>
+{% if user.is_authenticated %}
+<div>
+    Hi {{ user.username }} !! 
+
+    <p>Logout here <a href="{% url 'logout'%}">Log out</a></p>
+</div>
+<div>
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li {% if message.tags %} class="{{message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+<div>
+    <form method="post" action="{% url 'handinput'%}">
+        {% csrf_token %}
+
+        <p>User Hand Inputs</p>
+        <br>
+        <a href="{% url 'handinput' %}">My inputs</a>
+        <label>Age: </label>
+        <input type="text" name="age" id="age" label="age">
+
+        <button type="submit">Add Age</button>
+        
+    </form>
+</div>
+<div>
+    <p>All inputs</p>
+    <br>
+<p>{{ request.session.input_obj }}</p>
+
+
+   
+</div>
+
+<div>
+    <form action="{% url 'fileupload' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p><a href="{% url 'fileupload' %}">My FileUploads</a></p>
+        <br>
+        <p>User file upload</p>
+        
+        {% for entry in form %}
+           <div>
+                {{ entry.label_tag }}
+           </div>
+           <div>
+               {{entry}}
+           </div>
+        {% endfor %}
+        <br>
+        <button>
+            Save!
+        </button>
+    </form>
+</div>
+
+<div>
+    <p>All File Inputs</p>
+    <br>
+<p>{{ request.session.file_obj }}</p>
+
+
+   
+</div>
+
+<div>
+    <form action="{% url 'fileupload' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>User Gadget </p>
+        {% for entry in gaget_form %}
+           <div>
+                {{ entry.label_tag }}
+           </div>
+           <div>
+               {{entry}}
+           </div>
+        {% endfor %}
+        <br>
+        <button>
+            Save!
+        </button>
+    </form>
+</div>
+{% else %}
+
+    <p> You are not logged in </p>
+
+    <a href="{% url 'login'%}">Login</a>
+{% endif %}
+
+
+
+</div>
+
+
+
+
+{% endblock %}
